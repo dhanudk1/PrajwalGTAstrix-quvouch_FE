@@ -46,7 +46,7 @@ export default function SignupRightPanel() {
     <div className="hidden lg:flex items-center justify-center px-6 relative overflow-hidden">
       
       {/* Background glow */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-300/40 to-transparent blur-3xl" />
+      <div className="absolute inset-0 bg-linear-to-br from-purple-300/40 to-transparent blur-3xl" />
 
       <div className="relative max-w-md w-full space-y-10">
 
@@ -57,7 +57,7 @@ export default function SignupRightPanel() {
           <div className="absolute inset-0 rounded-3xl bg-purple-500/40 blur-3xl animate-pulse" />
 
           {/* QR Card */}
-          <div className="relative w-72 h-72 rounded-3xl bg-gradient-to-br from-purple-600 to-indigo-600 p-6 shadow-2xl">
+          <div className="relative w-72 h-72 rounded-3xl bg-linear-to-br from-purple-600 to-indigo-600 p-6 shadow-2xl">
             <div className="grid grid-cols-3 gap-3 bg-white rounded-2xl p-4">
               {[...Array(9)].map((_, i) => (
                 <div

@@ -190,7 +190,7 @@ export default function SalesDashboard() {
               >
                 <div className="flex items-center gap-4">
                   <div
-                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${c.color} text-white flex items-center justify-center`}
+                    className={`w-12 h-12 rounded-xl bg-linear-to-br ${c.color} text-white flex items-center justify-center`}
                   >
                     🏢
                   </div>
