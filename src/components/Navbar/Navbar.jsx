@@ -60,10 +60,10 @@ export default function Navbar() {
             aria-label="Toggle theme"
           >
             {theme === "light" ? (
-              <MdOutlineDarkMode size={22} />
-            ) : (
-              <MdOutlineLightMode size={22} />
-            )}
+              <MdOutlineDarkMode size={22} className="text-gray-700 dark:text-gray-300" />
+) : (
+  <MdOutlineLightMode size={22} className="text-yellow-400" />
+)}
           </button>
 
           {/* Sign In */}

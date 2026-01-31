@@ -14,6 +14,7 @@ import SalesReport from "./components/dashboards/Sales/SalesReport";
 
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 
+
 export default function App() {
   const location = useLocation();
 
@@ -30,6 +31,7 @@ export default function App() {
         {/* ================= PUBLIC ROUTES ================= */}
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignupPage />} />
+      
 
         {/* ================= SALES DASHBOARD ================= */}
         <Route

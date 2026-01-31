@@ -1,8 +1,14 @@
 import { X, UserPlus, Building2, User, MapPin } from "lucide-react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createBusiness } from "../../../features/business/BusinessThunk";
 
-export default function CreateClient({ open, onClose, onCreate }) {
+
+export default function CreateClient({ open, onClose }) {
   if (!open) return null;
+
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.business);
 
   const [form, setForm] = useState({
     name: "",
@@ -18,7 +24,8 @@ export default function CreateClient({ open, onClose, onCreate }) {
 
   const [errors, setErrors] = useState({});
 
-  // 🔎 VALIDATION
+  /* ---------------- VALIDATION ---------------- */
+
   const validate = () => {
     const e = {};
     Object.keys(form).forEach((key) => {
@@ -28,15 +35,33 @@ export default function CreateClient({ open, onClose, onCreate }) {
     return Object.keys(e).length === 0;
   };
 
-  // ✅ SUBMIT
+  /* ---------------- SUBMIT ---------------- */
+
   const handleCreate = () => {
     if (!validate()) return;
 
-    onCreate({
+    const payload = {
       name: form.name,
+      industry: form.industry,
       contact: form.contact,
       email: form.email,
-    });
+      phone: form.phone,
+      address: {
+        street: form.street,
+        city: form.city,
+        state: form.state,
+        zip: form.zip,
+      },
+    };
+
+    dispatch(createBusiness(payload))
+      .unwrap()
+      .then(() => {
+        onClose();
+      })
+      .catch((err) => {
+        console.error("Create client failed:", err);
+      });
   };
 
   const update = (key, value) => {
@@ -104,10 +129,12 @@ export default function CreateClient({ open, onClose, onCreate }) {
             </button>
             <button
               onClick={handleCreate}
+              disabled={loading}
               className="px-5 py-2 rounded-lg bg-purple-600 text-white
+                         disabled:opacity-60 disabled:cursor-not-allowed
                          shadow hover:shadow-[0_0_25px_rgba(168,85,247,0.7)]"
             >
-              Create Client
+              {loading ? "Creating..." : "Create Client"}
             </button>
           </div>
         </div>

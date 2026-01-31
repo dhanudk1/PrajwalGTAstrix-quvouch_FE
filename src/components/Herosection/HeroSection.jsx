@@ -1,15 +1,19 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
+  const navigate = useNavigate();
+
   return (
     <section className="relative overflow-hidden bg-white dark:bg-gray-950">
 
-      {/* Background glow */}
+      {/* 💜 BACKGROUND GLOW */}
       <motion.div
         animate={{ y: [0, 20, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-purple-300/40 rounded-full blur-[120px]"
       />
+
       <motion.div
         animate={{ y: [0, -20, 0] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
@@ -24,36 +28,49 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          {/* Badge */}
-          <span className="inline-flex items-center gap-2 px-4 py-1 rounded-full text-sm bg-purple-100 text-purple-700 mb-6">
+          {/* BADGE */}
+          <span className="inline-flex items-center gap-2 px-4 py-1 rounded-full text-sm
+                           bg-purple-100 dark:bg-purple-900/40
+                           text-purple-700 dark:text-purple-300 mb-6">
             ✨ Your Opinion Matters
           </span>
 
-          {/* Heading */}
-          <h1 className="mt-4 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white">
+          {/* HEADING */}
+          <h1 className="mt-4 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight
+                         text-gray-900 dark:text-white">
             Transform <br />
             <span className="text-purple-600">QR Codes</span> <br />
             Into Reviews
           </h1>
 
-          {/* Description */}
-          <p className="mt-6 text-gray-600 max-w-xl">
+          {/* DESCRIPTION */}
+          <p className="mt-6 text-gray-600 dark:text-gray-400 max-w-xl">
             The trust-first platform that makes collecting Google Reviews effortless.
             Let your customers vouch for your business with a simple scan.
           </p>
 
-          {/* Buttons */}
+          {/* CTA BUTTONS */}
           <div className="mt-8 flex flex-wrap gap-4">
-            <button className="px-6 py-3 rounded-lg text-white font-medium bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg hover:opacity-90 transition">
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate("/signup")}
+              className="px-6 py-3 rounded-lg text-white font-medium
+                         bg-gradient-to-r from-purple-600 to-indigo-600
+                         shadow-lg hover:opacity-90 transition"
+            >
               Start Free Trial →
-            </button>
+            </motion.button>
 
-            <button className="px-6 py-3 rounded-lg border border-purple-300 text-purple-600 font-medium hover:bg-purple-50 transition">
+            <button
+              className="px-6 py-3 rounded-lg border border-purple-300
+                         text-purple-600 font-medium
+                         hover:bg-purple-50 dark:hover:bg-gray-800 transition"
+            >
               ▶ Watch Demo
             </button>
           </div>
 
-          {/* Social proof */}
+          {/* SOCIAL PROOF */}
           <div className="mt-10 flex items-center gap-4">
             <div className="flex -space-x-2">
               {[1, 2, 3, 4].map((i) => (
@@ -63,7 +80,7 @@ export default function Hero() {
                 />
               ))}
             </div>
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-gray-600 dark:text-gray-400">
               <strong>25,000+</strong> Happy Businesses
             </span>
           </div>
@@ -74,7 +91,9 @@ export default function Hero() {
           <motion.div
             animate={{ y: [0, -15, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="relative w-[280px] h-[280px] sm:w-[340px] sm:h-[340px] rounded-3xl bg-gradient-to-br from-purple-200 to-purple-100 shadow-xl flex items-center justify-center"
+            className="relative w-[280px] h-[280px] sm:w-[340px] sm:h-[340px]
+                       rounded-3xl bg-gradient-to-br from-purple-200 to-purple-100
+                       shadow-xl flex items-center justify-center"
           >
             {/* QR */}
             <motion.div
@@ -89,32 +108,35 @@ export default function Hero() {
               </div>
             </motion.div>
 
-            {/* Floating card - Rating */}
+            {/* FLOATING RATING */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
-              className="absolute -top-4 -right-4 bg-white rounded-xl shadow-md px-3 py-2 text-sm"
+              className="absolute -top-4 -right-4 bg-white rounded-xl
+                         shadow-md px-3 py-2 text-sm"
             >
               ⭐ 4.9 Rating
             </motion.div>
 
-            {/* Floating card - Scans */}
+            {/* FLOATING SCANS */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.6 }}
-              className="absolute -bottom-4 -left-4 bg-white rounded-xl shadow-md px-3 py-2 text-sm"
+              className="absolute -bottom-4 -left-4 bg-white rounded-xl
+                         shadow-md px-3 py-2 text-sm"
             >
               📈 1.2k Scans
             </motion.div>
 
-            {/* Footer text */}
+            {/* FOOTER TEXT */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1 }}
-              className="absolute bottom-6 text-center text-sm text-purple-700 font-medium"
+              className="absolute bottom-6 text-center text-sm
+                         text-purple-700 font-medium"
             >
               One scan away from <br />
               <span className="font-bold">Your Next 5-Star Review</span>
