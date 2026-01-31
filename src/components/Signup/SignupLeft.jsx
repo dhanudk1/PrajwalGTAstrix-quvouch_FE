@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 import { QrCode } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { ROUTES, USER_ROLES } from "../../constants";
+import { loginThunk } from "../../features/auth/authSlice";
 
 const roles = [
   {
     id: "sales",
+    key: USER_ROLES.SALE_REPRESENTATIVE,
     label: "Sales Rep",
     placeholder: "salesrep@company.com",
     icon: (
@@ -17,6 +21,7 @@ const roles = [
   },
   {
     id: "client",
+    key: USER_ROLES.CLIENT,
     label: "Client",
     placeholder: "client@company.com",
     icon: (
@@ -28,6 +33,7 @@ const roles = [
   },
   {
     id: "admin",
+    key: USER_ROLES.ADMIN,
     label: "Admin",
     placeholder: "admin@company.com",
     icon: (
@@ -40,8 +46,9 @@ const roles = [
 
 export default function SignupLeft() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [role, setRole] = useState(localStorage.getItem("role") || "sales");
+  const [role, setRole] = useState(USER_ROLES.SALE_REPRESENTATIVE);
   const [dark, setDark] = useState(false);
 
   /* 🔹 ADDED STATES */
@@ -54,12 +61,8 @@ export default function SignupLeft() {
     document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
 
-  useEffect(() => {
-    localStorage.setItem("role", role);
-  }, [role]);
-
   /* 🔐 VALIDATION ADDED */
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setEmailError("");
@@ -79,12 +82,16 @@ export default function SignupLeft() {
 
     if (!valid) return;
 
-    localStorage.setItem("isAuth", "true");
-    localStorage.setItem("role", role);
-
-    if (role === "sales") navigate("/dashboard/sales");
-    if (role === "client") navigate("/dashboard/client");
-    if (role === "admin") navigate("/dashboard/admin");
+    const res = await dispatch(loginThunk({ email, password }));
+    if (res.meta.requestStatus === "fulfilled") {
+      // const activeUserRole = res.payload.roles[0];
+      if (role === USER_ROLES.SALE_REPRESENTATIVE)
+        navigate(ROUTES.SALES_DASHBOARD, { replace: true });
+      else if (role === USER_ROLES.CLIENT)
+        navigate(ROUTES.CLIENT_DASHBOARD, { replace: true });
+      else if (role === USER_ROLES.ADMIN)
+        navigate(ROUTES.ADMIN_DASHBOARD, { replace: true });
+    }
   };
 
   return (
@@ -134,16 +141,16 @@ export default function SignupLeft() {
 
           <div className="px-8 py-12 text-center">
 
-        <div className="px-8 py-12 text-center">
+            <div className="px-8 py-12 text-center">
   <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full
                   bg-purple-100 dark:bg-purple-900/40
                   text-purple-700 dark:text-purple-300 text-sm font-medium mb-4">
-    ✨ Welcome Back
-  </div>
+                ✨ Welcome Back
+              </div>
 
-  <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-    Sign In
-  </h1>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                Sign In
+              </h1>
 
   <p className="mt-1 text-purple-600 font-medium">
     to Quvouch
@@ -151,20 +158,20 @@ export default function SignupLeft() {
 
 
 
-  <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-    Access your dashboard
-  </p>
-</div>
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                Access your dashboard
+              </p>
+            </div>
 
             {/* ROLE SWITCH */}
             <div className="mt-8 grid grid-cols-3 bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
               {roles.map((r) => (
                 <button
-                  key={r.id}
-                  onClick={() => setRole(r.id)}
+                  key={r.key}
+                  onClick={() => setRole(r.key)}
                   className={`h-14 flex flex-col items-center justify-center gap-1 rounded-lg text-xs font-medium
                     ${
-                      role === r.id
+                      role === r.key
                         ? "bg-purple-600 text-white shadow-md"
                         : "text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                     }`}
@@ -182,8 +189,8 @@ export default function SignupLeft() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={roles.find(r => r.id === role).placeholder}
-                 className="w-full h-12 px-4 rounded-lg
+                  placeholder={roles.find((r) => r.key === role).placeholder}
+                  className="w-full h-12 px-4 rounded-lg
            bg-gray-50 dark:bg-gray-800
            text-gray-900 dark:text-white
            placeholder-gray-400 dark:placeholder-gray-500
@@ -214,7 +221,7 @@ export default function SignupLeft() {
                 className="w-full h-12 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600
                            text-white font-medium shadow-lg"
               >
-                Sign in as {roles.find(r => r.id === role).label} →
+                Sign in as {roles.find((r) => r.key === role).label} →
               </button>
             </form>
 
@@ -229,45 +236,45 @@ export default function SignupLeft() {
               </span>
             </p>
             {/* SOCIAL LOGIN */}
-<div className="mt-6">
-  <div className="flex items-center gap-3 mb-4">
-    <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
-    <span className="text-xs text-gray-400">OR</span>
-    <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
-  </div>
+            <div className="mt-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+                <span className="text-xs text-gray-400">OR</span>
+                <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+              </div>
 
-  <div className="grid grid-cols-2 gap-3">
-    {/* GOOGLE */}
-    <button
-      type="button"
-      className="h-12 flex items-center justify-center gap-2 rounded-lg
+              <div className="grid grid-cols-2 gap-3">
+                {/* GOOGLE */}
+                <button
+                  type="button"
+                  className="h-12 flex items-center justify-center gap-2 rounded-lg
                  border border-gray-200 dark:border-gray-700
                  hover:bg-gray-50 dark:hover:bg-gray-800 transition"
-    >
-      <img
-        src="https://www.svgrepo.com/show/475656/google-color.svg"
-        alt="Google"
-        className="w-5 h-5"
-      />
-      <span className="text-sm font-medium">Google</span>
-    </button>
+                >
+                  <img
+                    src="https://www.svgrepo.com/show/475656/google-color.svg"
+                    alt="Google"
+                    className="w-5 h-5"
+                  />
+                  <span className="text-sm font-medium">Google</span>
+                </button>
 
-    {/* APPLE */}
-    <button
-      type="button"
-      className="h-12 flex items-center justify-center gap-2 rounded-lg
+                {/* APPLE */}
+                <button
+                  type="button"
+                  className="h-12 flex items-center justify-center gap-2 rounded-lg
                  border border-gray-200 dark:border-gray-700
                  hover:bg-gray-50 dark:hover:bg-gray-800 transition"
-    >
-      <img
-        src="https://www.svgrepo.com/show/511330/apple-173.svg"
-        alt="Apple"
-        className="w-5 h-5 dark:invert"
-      />
-      <span className="text-sm font-medium">Apple</span>
-    </button>
-  </div>
-</div>
+                >
+                  <img
+                    src="https://www.svgrepo.com/show/511330/apple-173.svg"
+                    alt="Apple"
+                    className="w-5 h-5 dark:invert"
+                  />
+                  <span className="text-sm font-medium">Apple</span>
+                </button>
+              </div>
+            </div>
 
 
           </div>

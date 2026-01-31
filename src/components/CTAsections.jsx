@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ROUTES } from "../constants";
 
 export default function CTA() {
   return (
@@ -30,7 +31,7 @@ export default function CTA() {
           
           {/* Start Free Trial */}
           <Link
-            to="/signup"
+            to={ROUTES.LOGIN}
             className="px-6 py-3 rounded-lg text-white font-medium
                        bg-gradient-to-r from-purple-600 to-indigo-600
                        shadow-lg hover:opacity-90 transition

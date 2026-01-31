@@ -14,6 +14,9 @@ import {
   Download,
   Copy,
 } from "lucide-react";
+import { ROUTES } from "../../../constants";
+import { logoutThunk } from "../../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 // Placeholder icons — replace with your real custom icons if you have them
 const ClientsIcon = (props) => <Users {...props} />;
@@ -29,6 +32,8 @@ const ChartIcon = (props) => (
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [dark, setDark] = useState(false);
   const [activeTab, setActiveTab] = useState("sales-reps");
   const [search, setSearch] = useState("");
@@ -38,9 +43,8 @@ export default function AdminDashboard() {
   }, [dark]);
 
   const logout = () => {
-    localStorage.removeItem("isAuth");
-    localStorage.removeItem("role");
-    navigate("/signup");
+    dispatch(logoutThunk())
+    navigate(ROUTES.LOGIN);
   };
 
   // Safe initials function

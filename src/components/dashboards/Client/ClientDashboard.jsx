@@ -15,9 +15,13 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { logoutThunk } from "../../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 export default function ReviewDashboard() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
   const [dark, setDark] = useState(false);
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
@@ -81,8 +85,8 @@ export default function ReviewDashboard() {
   });
 
   const logout = () => {
-    localStorage.clear();
-    navigate("/");
+    dispatch(logoutThunk())
+    navigate(ROUTES.LOGIN);
   };
 
   return (

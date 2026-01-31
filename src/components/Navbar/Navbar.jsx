@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
+import { ROUTES } from "../../constants";
 
 export default function Navbar() {
   const [theme, setTheme] = useState("light");
@@ -68,7 +69,7 @@ export default function Navbar() {
 
           {/* Sign In */}
           <Link
-            to="/signup"
+            to={ROUTES.LOGIN}
             className="text-gray-600 dark:text-gray-300 hover:text-purple-600 font-medium"
           >
             Sign In
@@ -76,7 +77,7 @@ export default function Navbar() {
 
           {/* Get Started */}
           <Link
-            to="/signup"
+            to={ROUTES.LOGIN}
             className="px-5 py-2 rounded-lg text-white font-medium bg-gradient-to-r from-purple-600 to-indigo-600 shadow-md hover:opacity-90 transition"
           >
             Get Started →
@@ -123,7 +124,7 @@ export default function Navbar() {
               </button>
 
               <Link
-                to="/signup"
+                to={ROUTES.LOGIN}
                 onClick={() => setMenuOpen(false)}
                 className="text-purple-600 font-medium"
               >
@@ -132,7 +133,7 @@ export default function Navbar() {
             </div>
 
             <Link
-              to="/signup"
+              to={ROUTES.LOGIN}
               onClick={() => setMenuOpen(false)}
               className="block text-center mt-3 px-5 py-3 rounded-lg text-white font-medium bg-gradient-to-r from-purple-600 to-indigo-600"
             >

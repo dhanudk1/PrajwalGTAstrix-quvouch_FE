@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ROUTES } from "../constants";
 
 export default function Pricing() {
   const plans = [
@@ -121,7 +122,7 @@ export default function Pricing() {
 
                 {/* CTA */}
                 <Link
-                  to="/signup"
+                  to={ROUTES.LOGIN}
                   className="mt-6 w-full py-3 rounded-lg font-medium text-center
                     border border-purple-300 text-purple-600
                     transition-all duration-300

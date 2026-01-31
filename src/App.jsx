@@ -13,47 +13,54 @@ import CreateClient from "./components/dashboards/Sales/CreateClient";
 import SalesReport from "./components/dashboards/Sales/SalesReport";
 
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
+import Unauthorized from "./components/Unauthorized";
+import { ROUTES, USER_ROLES } from "./constants";
 
 export default function App() {
   const location = useLocation();
 
-  // ❌ Hide Navbar on signup & dashboards
-  const hideNavbar =
-    location.pathname === "/signup" ||
-    location.pathname.startsWith("/dashboard");
+   // Public routes only
+  const publicRoutes = [
+    ROUTES.HOME,
+    ROUTES.LOGIN,
+    ROUTES.UNAUTHORIZED,
+  ];
+
+  const isPublicRoute = publicRoutes.includes(location.pathname);
 
   return (
     <div className="App min-h-screen flex flex-col">
-      {!hideNavbar && <Navbar />}
+      {isPublicRoute && <Navbar />}
 
       <Routes>
         {/* ================= PUBLIC ROUTES ================= */}
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<SignupPage />} />
+        <Route path={ROUTES.HOME} element={<Home />} />
+        <Route path={ROUTES.LOGIN} element={<SignupPage />} />
+        <Route path={ROUTES.UNAUTHORIZED} element={<Unauthorized />} />
 
         {/* ================= SALES DASHBOARD ================= */}
         <Route
-          path="/dashboard/sales"
+          path={ROUTES.SALES_DASHBOARD}
           element={
-            <ProtectedRoute allowedRole="sales">
+            <ProtectedRoute allowedRole={USER_ROLES.SALE_REPRESENTATIVE}>
               <SalesDashboard />
             </ProtectedRoute>
           }
         />
 
         <Route
-          path="/dashboard/sales/new-client"
+          path={ROUTES.NEW_CLIENT}
           element={
-            <ProtectedRoute allowedRole="sales">
+            <ProtectedRoute allowedRole={USER_ROLES.SALE_REPRESENTATIVE}>
               <CreateClient />
             </ProtectedRoute>
           }
         />
 
         <Route
-          path="/dashboard/sales/report"
+          path={ROUTES.SALES_REPORT}
           element={
-            <ProtectedRoute allowedRole="sales">
+            <ProtectedRoute allowedRole={USER_ROLES.SALE_REPRESENTATIVE}>
               <SalesReport />
             </ProtectedRoute>
           }
@@ -61,9 +68,9 @@ export default function App() {
 
         {/* ================= CLIENT DASHBOARD ================= */}
         <Route
-          path="/dashboard/client"
+          path={ROUTES.CLIENT_DASHBOARD}
           element={
-            <ProtectedRoute allowedRole="client">
+            <ProtectedRoute allowedRole={USER_ROLES.CLIENT}>
               <ClientDashboard />
             </ProtectedRoute>
           }
@@ -71,16 +78,16 @@ export default function App() {
 
         {/* ================= ADMIN DASHBOARD ================= */}
         <Route
-          path="/dashboard/admin"
+          path={ROUTES.ADMIN_DASHBOARD}
           element={
-            <ProtectedRoute allowedRole="admin">
+            <ProtectedRoute allowedRole={USER_ROLES.ADMIN}>
               <AdminDashboard />
             </ProtectedRoute>
           }
         />
       </Routes>
 
-      {!hideNavbar && <Footer />}
+      {isPublicRoute && <Footer />}
     </div>
   );
 }

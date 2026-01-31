@@ -17,16 +17,18 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateClient from "./CreateClient";
+import { logoutThunk } from "../../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 export default function Dashboard() {
   const [darkMode, setDarkMode] = useState(false);
   const [createClientOpen, setCreateClientOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const logout = () => {
-    localStorage.removeItem("isAuth");
-    localStorage.removeItem("role");
-    navigate("/", { replace: true });
+    dispatch(logoutThunk());
+    navigate(ROUTES.LOGIN, { replace: true });
   };
 
   return (
