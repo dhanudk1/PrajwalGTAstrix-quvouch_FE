@@ -16,6 +16,7 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import Unauthorized from "./components/Unauthorized";
 import { ROUTES, USER_ROLES } from "./constants";
 
+
 export default function App() {
   const location = useLocation();
 
@@ -34,9 +35,15 @@ export default function App() {
 
       <Routes>
         {/* ================= PUBLIC ROUTES ================= */}
+<<<<<<< HEAD
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<SignupPage />} />
+      
+=======
         <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.LOGIN} element={<SignupPage />} />
         <Route path={ROUTES.UNAUTHORIZED} element={<Unauthorized />} />
+>>>>>>> 6d02c332d7be547eb3c411fc69b359905455bae7
 
         {/* ================= SALES DASHBOARD ================= */}
         <Route
