@@ -7,8 +7,33 @@ import "./index.css";
 import { store } from "./store/store";
 import CookieProvider from "./CookieProvider";
 import { injectStore } from "./utils/api";
+import { jwtDecode } from "jwt-decode";
 
 injectStore(store);
+
+if (localStorage.getItem("accessToken")) {
+  const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+
+  try {
+    const user = jwtDecode(accessToken);
+    store.dispatch({
+      type: "auth/setAccessToken",
+      payload: {
+        user: { ...user, roles: user.authorities || [] }, // Adjust if your token uses a different field for roles
+        accessToken,
+      },
+    });
+  } catch (error) {
+    localStorage.removeItem("accessToken");
+    store.dispatch({
+      type: "auth/clearAuth",
+    });
+  }
+} else {
+  store.dispatch({
+    type: "auth/clearAuth",
+  });
+}
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

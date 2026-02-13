@@ -12,19 +12,13 @@ export default function ProtectedRoute({
   unauthorizedRedirectTo = ROUTES.UNAUTHORIZED,
 }) {
   const location = useLocation();
-  const { user, loading } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
-  if (loading) {
-    return (
-      <Loading />
-    );
-  }
   if (!user) {
     return <Navigate to={redirectTo} state={{ from: location }} replace />;
   }
 
   const userRole = user.roles[0];
-  console.log(userRole);
 
   const rolesToAllow =
     allowedRoles && Array.isArray(allowedRoles)
